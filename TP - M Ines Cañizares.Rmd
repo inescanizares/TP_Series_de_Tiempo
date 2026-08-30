@@ -84,6 +84,7 @@ datos <- datos |>
 
 datos
 ```
+
 ```{r}
 # Filtramos según los años que voy a utilizar (1999-01-01 a 2018-12-31)
 datos_filtrado <- datos %>%
