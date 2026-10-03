@@ -1,0 +1,370 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  spanish,
+  11pt,
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\KOMAoption{captions}{tableheading}
+\usepackage{caption}
+\captionsetup[table]{position=bottom,labelformat=default,labelsep=colon,name=Tabla}
+\captionsetup[figure]{labelformat=default,labelsep=colon,name=Figura}
+\usepackage{float}
+\floatplacement{figure}{H}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Tabla de contenidos}
+\else
+  \newcommand\contentsname{Tabla de contenidos}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Listado de Figuras}
+\else
+  \newcommand\listfigurename{Listado de Figuras}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Listado de Tablas}
+\else
+  \newcommand\listtablename{Listado de Tablas}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figura}
+\else
+  \newcommand\figurename{Figura}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabla}
+\else
+  \newcommand\tablename{Tabla}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listado}
+\newcommand*\listoflistings{\listof{codelisting}{Listado de Listados}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdflang={es-ES},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\author{}
+\date{}
+\begin{document}
+
+
+\begin{titlepage}
+  \centering
+
+  \includegraphics[width=0.7\textwidth]{logo_facultad.png}\par
+
+  \vspace{3cm}
+
+  {\scshape\Huge Trabajo Práctico de Series de Tiempo \par}
+
+  \vspace{1.5cm}
+
+  {\itshape\LARGE Análisis de muertes por Accidentes Cerebrovasculares (ACV) en Estados Unidos \par}
+
+  \vfill
+
+  {\Large Alumna: Cañizares, María Inés \par}
+
+  \vspace{0.5cm}
+
+  {\Large Licenciatura en Estadística \par}
+
+  \vspace{1cm}
+
+  {\large Año 2026 \par}
+
+\end{titlepage}
+
+\section{Introducción}\label{introducciuxf3n}
+
+El Accidente Cerebrovascular (ACV), conocido popularmente como ``derrame
+cerebral'' o ``ataque cerebral'', es una afección médica que ocurre
+cuando se interrumpe el flujo de sangre hacia una parte del cerebro, ya
+sea porque un vaso sanguíneo se obstruye o porque se rompe. Esta
+interrupción hace que las células cerebrales de la zona afectada dejen
+de recibir oxígeno y nutrientes, lo que puede provocar daños permanentes
+en cuestión de minutos.
+
+El ACV es uno de los principales problemas de salud pública a nivel
+mundial. Es una de las principales causas de muerte y, entre quienes
+sobreviven, una de las principales causas de discapacidad a largo plazo,
+ya que puede dejar secuelas como parálisis, dificultades para hablar o
+problemas cognitivos. Además, es una enfermedad estrechamente
+relacionada con factores que varían a lo largo del año, como la presión
+arterial y la temperatura ambiente, lo que la convierte en un fenómeno
+interesante para analizar desde una perspectiva temporal: ¿la cantidad
+de muertes por esta causa se mantiene estable a lo largo de los años, o
+cambia? ¿Existen ciertas épocas del año donde el riesgo es mayor?
+
+Entender cómo evoluciona la mortalidad por ACV a través del tiempo es
+relevante no solo desde el punto de vista médico, sino también para la
+planificación de recursos sanitarios: si se pudiera anticipar en qué
+meses o períodos aumenta el riesgo, los sistemas de salud podrían
+prepararse mejor (por ejemplo, reforzando personal o insumos en los
+meses de mayor demanda).
+
+Por este motivo, en este trabajo se analiza la evolución mensual de la
+cantidad de muertes por ACV en Estados Unidos entre los años 1999 y
+2019, utilizando datos públicos provenientes de CDC WONDER, una base de
+datos oficial del gobierno estadounidense que recopila estadísticas
+vitales del país. El objetivo es describir el comportamiento de esta
+serie a lo largo del tiempo e identificar si existen patrones
+recurrentes, como tendencias de largo plazo o variaciones estacionales
+asociadas a las distintas épocas del año.
+
+\section{Análisis descriptivo de la serie
+temporal}\label{anuxe1lisis-descriptivo-de-la-serie-temporal}
+
+Se presenta la serie temporal de las muertes por ACV mensual en Estados
+Unidos durante el período 1999--2018. El gráfico permite visualizar de
+manera global cómo se ha comportado la variable en el tiempo.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-serie-1.pdf}}
+
+}
+
+\caption{\label{fig-serie}Evolución de las muertes mensuales por ACV en
+Estados Unidos (1999--2018)}
+
+\end{figure}%
+
+El análisis de la serie muestra que se trata de una variable con
+periodicidad mensual, con 12 observaciones por año. En cuanto a la
+tendencia, no se observa un comportamiento uniforme a lo largo de todo
+el período: entre 1999 y 2010 se registra un descenso sostenido en la
+cantidad de muertes, mientras que a partir de 2011 la serie comienza a
+mostrar una recuperación progresiva, con un crecimiento que se mantiene
+hasta el final del período en 2018. Este patrón refleja un cambio de
+dirección en la tendencia, describiendo una forma de ``U'' a lo largo de
+los veinte años analizados, lo que indica que la serie no es
+estacionaria en media.
+
+Respecto a la estacionalidad, se observa un comportamiento recurrente
+año tras año, caracterizado por valores máximos en los meses de invierno
+(diciembre, enero y febrero) y valores mínimos en los meses de verano
+(junio a septiembre). No se detectaron valores faltantes en el período
+estudiado.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-boxplot-1.pdf}}
+
+}
+
+\caption{\label{fig-boxplot}Distribución anual de las muertes por ACV en
+Estados Unidos (1999--2018)}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-season-1.pdf}}
+
+}
+
+\caption{\label{fig-season}Gráfico estacional de las muertes por ACV en
+Estados Unidos (1999--2018)}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-subseries-1.pdf}}
+
+}
+
+\caption{\label{fig-subseries}Gráfico de subseries estacionales de las
+muertes por ACV en Estados Unidos (1999--2018)}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-acf-1.pdf}}
+
+}
+
+\caption{\label{fig-acf}Función de autocorrelación de las muertes por
+ACV}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{TP-MInesCañizares_files/figure-pdf/fig-pacf-1.pdf}}
+
+}
+
+\caption{\label{fig-pacf}Función de Autocorrelación Parcial de las
+muertes por ACV}
+
+\end{figure}%
+
+
+
+
+\end{document}

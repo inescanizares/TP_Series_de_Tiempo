@@ -1,48 +1,8 @@
 ---
-fontsize: 11pt
-output: 
-  pdf_document: 
-   latex_engine: xelatex
-   keep_tex: true
-   toc: false
-   fig_caption: true  
-geometry: "left=3cm,right=3cm,top=3cm,bottom=3cm"
-#titlepage: true 
-lang: es-ES  
-editor_options: 
-  chunk_output_type: console
-header-includes:
-  - \usepackage{caption}
-  - \captionsetup[table]{position=bottom,labelformat=default,labelsep=colon,name=Tabla}
-  - \captionsetup[figure]{labelformat=default,labelsep=colon,name=Figura}
-include-in-header:
-            - text: |
-                \usepackage{float}
-                \floatplacement{figure}{H} 
+title: "Presentacion Tp Series"
+author: "M. Ines Cañizares"
+output: html_document
 ---
-
-\begin{titlepage}
-  \centering
-  % Logo
-  \includegraphics[width=0.7\textwidth]{logo_facultad.png}\par
-  % Espacio entre logo y título principal
-  \vspace{3cm}
-  % Título principal
-  {\scshape\Huge Trabajo Práctico de Series de Tiempo \par}
-  \vspace{1.5cm}
-  % Subtítulo
-  {\itshape\LARGE Análisis de muertes por Accidentes Cerebrovasculares (ACV) en Estados Unidos \par}
-  % Esto llena todo el espacio intermedio
-  \vfill
-  % Carrera y Alumna, cerca de la fecha
-  {\Large Alumna: Cañizares, Maria Ines \par}
-  \vspace{0.5cm}
-  {\Large Licenciatura en Estadística \par}
-  % Fecha abajo del todo
-  \vspace{1cm}
-  {\large Año 2026 \par}
-\end{titlepage}
-
 ```{r load-packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(readr)
@@ -65,8 +25,8 @@ library(kableExtra)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align="center")
-# knitr::opts_chunk$set(out.width="70%")
-# knitr::opts_chunk$set(out.height="70%")
+knitr::opts_chunk$set(out.width="70%")
+knitr::opts_chunk$set(out.height="70%")
 knitr::opts_chunk$set(message=FALSE)
 knitr::opts_chunk$set(warning=FALSE)
 knitr::opts_chunk$set(echo=FALSE)
@@ -81,6 +41,8 @@ datos <- datos |>
   mutate(Month = yearmonth(`Month.Code`)) |>
   select(Month, muertes = Deaths) |>
   as_tsibble(index = Month)
+
+datos
 ```
 
 ```{r}

@@ -1,0 +1,251 @@
+---
+format:
+  pdf:
+    pdf-engine: xelatex
+    keep-tex: true
+    toc: false
+    fig-cap: true
+    geometry:
+      - left=3cm
+      - right=3cm
+      - top=3cm
+      - bottom=3cm
+fontsize: 11pt
+lang: es-ES
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+header-includes:
+  - \usepackage{caption}
+  - \captionsetup[table]{position=bottom,labelformat=default,labelsep=colon,name=Tabla}
+  - \captionsetup[figure]{labelformat=default,labelsep=colon,name=Figura}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+
+editor:
+  render-on-save: false
+---
+
+\begin{titlepage}
+  \centering
+
+  \includegraphics[width=0.7\textwidth]{logo_facultad.png}\par
+
+  \vspace{3cm}
+
+  {\scshape\Huge Trabajo Práctico de Series de Tiempo \par}
+
+  \vspace{1.5cm}
+
+  {\itshape\LARGE Análisis de muertes por Accidentes Cerebrovasculares (ACV) en Estados Unidos \par}
+
+  \vfill
+
+  {\Large Alumna: Cañizares, María Inés \par}
+
+  \vspace{0.5cm}
+
+  {\Large Licenciatura en Estadística \par}
+
+  \vspace{1cm}
+
+  {\large Año 2026 \par}
+
+\end{titlepage}
+
+
+
+```{r}
+# Carga de paquetes
+library(readxl)
+library(readr)
+library(tidyverse)
+library(feasts)
+library(fpp3)
+library(tsibble)
+library(lubridate)
+library(forecast)
+library(rmarkdown)
+library(knitr)
+library(gridExtra)
+library(kableExtra)
+```
+
+# Introducción
+
+El Accidente Cerebrovascular (ACV), conocido popularmente como "derrame cerebral" o "ataque cerebral", es una afección médica que ocurre cuando se interrumpe el flujo de sangre hacia una parte del cerebro, ya sea porque un vaso sanguíneo se obstruye o porque se rompe. Esta interrupción hace que las células cerebrales de la zona afectada dejen de recibir oxígeno y nutrientes, lo que puede provocar daños permanentes en cuestión de minutos.
+
+El ACV es uno de los principales problemas de salud pública a nivel mundial. Es una de las principales causas de muerte y, entre quienes sobreviven, una de las principales causas de discapacidad a largo plazo, ya que puede dejar secuelas como parálisis, dificultades para hablar o problemas cognitivos. Además, es una enfermedad estrechamente relacionada con factores que varían a lo largo del año, como la presión arterial y la temperatura ambiente, lo que la convierte en un fenómeno interesante para analizar desde una perspectiva temporal: ¿la cantidad de muertes por esta causa se mantiene estable a lo largo de los años, o cambia? ¿Existen ciertas épocas del año donde el riesgo es mayor?
+
+Entender cómo evoluciona la mortalidad por ACV a través del tiempo es relevante no solo desde el punto de vista médico, sino también para la planificación de recursos sanitarios: si se pudiera anticipar en qué meses o períodos aumenta el riesgo, los sistemas de salud podrían prepararse mejor (por ejemplo, reforzando personal o insumos en los meses de mayor demanda).
+
+Por este motivo, en este trabajo se analiza la evolución mensual de la cantidad de muertes por ACV en Estados Unidos entre los años 1999 y 2019, utilizando datos públicos provenientes de CDC WONDER, una base de datos oficial del gobierno estadounidense que recopila estadísticas vitales del país. El objetivo es describir el comportamiento de esta serie a lo largo del tiempo e identificar si existen patrones recurrentes, como tendencias de largo plazo o variaciones estacionales asociadas a las distintas épocas del año.
+
+
+```{r}
+# Cargar los datos
+datos <- read.delim(
+  "Multiple_Cause_of_Death__1999-2020.xls",
+  sep = "\t"
+)
+
+# Transformar los datos en una serie temporal mensual
+datos <- datos |>
+  mutate(Month = yearmonth(`Month.Code`)) |>
+  select(Month, muertes = Deaths) |>
+  as_tsibble(index = Month)
+```
+
+
+```{r}
+# Se seleccionó el período comprendido entre enero de 1999 y diciembre de 2018.
+datos_filtrado <- datos |>
+  filter_index("1999 Jan" ~ "2018 Dec")
+```
+
+# Análisis descriptivo de la serie temporal
+
+Se presenta la serie temporal de las muertes por ACV mensual en Estados Unidos durante el período 1999–2018. El gráfico permite visualizar de manera global cómo se ha comportado la variable en el tiempo.
+
+```{r}
+#| label: fig-serie
+#| fig-cap: "Evolución de las muertes mensuales por ACV en Estados Unidos (1999–2018)"
+## Evolución temporal de las muertes
+ggplot(
+  data = datos_filtrado,
+  aes(x = Month, y = muertes)
+) +
+  geom_line(
+    color = "cadetblue4",
+    linewidth = 0.6
+  ) +
+  labs(
+    x = "Fecha",
+    y = "Cantidad de muertes"
+  ) +
+  theme_minimal() +
+  scale_x_yearmonth(
+    date_breaks = "24 months",
+    date_labels = "%Y"
+  ) +
+  theme(
+    axis.text.x = element_text(
+      angle = 0,
+      hjust = 1
+    )
+  )
+```
+
+El análisis de la serie muestra que se trata de una variable con periodicidad mensual, con 12 observaciones por año. En cuanto a la tendencia, no se observa un comportamiento uniforme a lo largo de todo el período: entre 1999 y 2010 se registra un descenso sostenido en la cantidad de muertes, mientras que a partir de 2011 la serie comienza a mostrar una recuperación progresiva, con un crecimiento que se mantiene hasta el final del período en 2018. Este patrón refleja un cambio de dirección en la tendencia, describiendo una forma de "U" a lo largo de los veinte años analizados, lo que indica que la serie no es estacionaria en media.
+
+Respecto a la estacionalidad, se observa un comportamiento recurrente año tras año, caracterizado por valores máximos en los meses de invierno (diciembre, enero y febrero) y valores mínimos en los meses de verano (junio a septiembre). No se detectaron valores faltantes en el período estudiado.
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "Distribución anual de las muertes por ACV en Estados Unidos (1999–2018)"
+## Distribución anual de las muertes
+datos_filtrado |>
+  mutate(año = year(Month)) |>
+  ggplot(
+    aes(
+      x = as.factor(año),
+      y = muertes
+    )
+  ) +
+  geom_boxplot(
+    fill = "cadetblue4"
+  ) +
+  labs(
+    x = "Año",
+    y = "Cantidad de muertes"
+  ) +
+  theme_minimal()
+```
+
+
+
+```{r}
+#| label: fig-season
+#| fig-cap: "Gráfico estacional de las muertes por ACV en Estados Unidos (1999–2018)"
+## Comportamiento estacional
+datos_filtrado |>
+  gg_season(
+    muertes,
+    labels = "both"
+  ) +
+  labs(
+    y = "Cantidad de muertes",
+    x = "Mes"
+  ) +
+  theme_minimal() +
+  coord_cartesian(
+    clip = "off"
+  )
+```
+
+
+
+```{r}
+#| label: fig-subseries
+#| fig-cap: "Gráfico de subseries estacionales de las muertes por ACV en Estados Unidos (1999–2018)"
+## Subseries estacionales
+datos_filtrado |>
+  gg_subseries(muertes) +
+  labs(
+    y = "Cantidad de muertes",
+    x = "Mes"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+
+
+```{r}
+#| label: fig-acf
+#| fig-cap: "Función de autocorrelación de las muertes por ACV"
+
+# Función de autocorrelación
+datos_filtrado |>
+  ACF(
+    muertes,
+    lag_max = 36
+  ) |>
+  autoplot() +
+  labs(
+    x = "Rezago (meses)",
+    y = "Autocorrelación"
+  ) +
+  theme_minimal(
+    base_size = 13
+  ) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "gray30")
+  )
+```
+
+```{r}
+#| label: fig-pacf
+#| fig-cap: "Función de Autocorrelación Parcial de las muertes por ACV"
+
+datos_filtrado |>
+  PACF(muertes, lag_max = 36) |>
+  autoplot() +
+  labs(
+    x = "Rezago (meses)",
+    y = "Autocorrelación parcial"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "gray30")
+  )
+```
+
