@@ -299,6 +299,11 @@ año tras año, caracterizado por valores máximos en los meses de invierno
 (junio a septiembre). No se detectaron valores faltantes en el período
 estudiado.
 
+Con el fin de profundizar en el análisis de la tendencia y la
+variabilidad de la serie, se construyó un gráfico de boxplots anuales
+(Figura 2), que permite visualizar la distribución de los datos mes a
+mes agrupados por año.
+
 \begin{figure}
 
 \centering{
@@ -311,6 +316,28 @@ estudiado.
 Estados Unidos (1999--2018)}
 
 \end{figure}%
+
+Las medianas anuales confirman el mismo patrón en forma de ``U''
+descrito anteriormente: descienden desde 1999 hasta aproximadamente
+2010-2011, para luego aumentar de manera sostenida hasta 2018.
+
+En cuanto a la dispersión, se observa que la amplitud de las cajas
+(rango intercuartílico) no se mantiene constante a lo largo del período:
+es mayor en los primeros años de la serie (1999-2003) y en los últimos
+(2016-2018), mientras que se reduce notablemente durante los años
+centrales (2008-2013). Esta variación en la dispersión acompaña al nivel
+general de la serie, lo que sugiere que la variancia no es estable en el
+tiempo, es decir, se evidencia heterocedasticidad.
+
+Asimismo, se identifican algunos valores atípicos (outliers) en
+determinados años, correspondientes principalmente a meses de invierno
+con picos de mortalidad inusualmente altos respecto al resto de las
+observaciones de ese mismo año.
+
+Para analizar con mayor detalle el comportamiento estacional de la
+serie, se elaboró un gráfico estacional (Figura 3), en el cual se
+superponen las observaciones de cada año, ordenadas por mes, con el fin
+de comparar la forma del patrón estacional entre los distintos años.
 
 \begin{figure}
 
@@ -325,6 +352,26 @@ Estados Unidos (1999--2018)}
 
 \end{figure}%
 
+Se observa que la forma del ciclo estacional se mantiene notablemente
+estable a lo largo de todo el período: en todos los años, los valores
+más altos se concentran en los meses de diciembre y enero, mientras que
+los valores más bajos se registran entre junio y septiembre. Lo que
+varía entre los distintos años no es la forma de la curva, sino su nivel
+general, lo cual es consistente con la tendencia en forma de ``U''
+identificada previamente: las curvas correspondientes a los primeros
+años (1999-2003) y a los últimos (2016-2018) se ubican en niveles más
+altos, mientras que las curvas de los años centrales (2008-2013) se
+ubican en niveles más bajos. En síntesis, el gráfico estacional confirma
+la presencia de un patrón estacional anual marcado y persistente en el
+tiempo, lo que refuerza la evidencia de no estacionariedad de la serie
+observada en los análisis anteriores.
+
+Con el objetivo de aislar el efecto de cada mes en particular a lo largo
+de toda la serie, se construyó un gráfico de subseries estacionales
+(Figura 4), donde cada panel representa un mes del año y la línea
+horizontal indica el promedio histórico de ese mes para todo el período
+analizado.
+
 \begin{figure}
 
 \centering{
@@ -337,6 +384,24 @@ Estados Unidos (1999--2018)}
 muertes por ACV en Estados Unidos (1999--2018)}
 
 \end{figure}%
+
+Este gráfico confirma lo observado en las figuras anteriores: los meses
+de diciembre y enero presentan los promedios más altos de mortalidad,
+mientras que los meses de junio a septiembre muestran los promedios más
+bajos, evidenciando nuevamente el patrón estacional de tipo
+invierno-verano. Asimismo, dentro de cada panel se puede apreciar que la
+evolución temporal del mes correspondiente también sigue la forma de
+``U'' identificada en la tendencia general de la serie, lo que indica
+que este comportamiento no solo se da en el nivel agregado, sino que se
+repite de manera consistente mes a mes. En conjunto, este gráfico
+refuerza la evidencia de un componente estacional fuerte y estable en el
+tiempo, que convive con una tendencia no constante a lo largo del
+período estudiado.
+
+Finalmente, para contar con una confirmación estadística de las
+características observadas en los gráficos anteriores, se calculó la
+función de autocorrelación muestral (Figura 5), considerando hasta 36
+rezagos.
 
 \begin{figure}
 
@@ -351,6 +416,25 @@ ACV}
 
 \end{figure}%
 
+Se observa un pico de autocorrelación particularmente alto en el rezago
+12, que vuelve a repetirse con menor intensidad en los rezagos 24 y 36,
+lo cual constituye evidencia formal de la estacionalidad anual detectada
+previamente de manera gráfica. Asimismo, se observa que las
+autocorrelaciones no decaen rápidamente hacia cero a medida que aumenta
+el rezago, sino que lo hacen de forma lenta y sostenida, manteniéndose
+por encima de la banda de significancia en la gran mayoría de los
+rezagos analizados. Este comportamiento es característico de series no
+estacionarias, ya que refleja la presencia de una dependencia de largo
+plazo asociada tanto a la tendencia como a la estacionalidad presentes
+en la serie. En síntesis, el correlograma confirma de manera formal lo
+observado en el análisis gráfico previo, evidenciando que la serie no es
+estacionaria ni en media ni en varianza.
+
+Complementando el análisis de la función de autocorrelación, se calculó
+también la función de autocorrelación parcial (Figura 6), que permite
+identificar la correlación directa entre una observación y su rezago,
+eliminando el efecto de los rezagos intermedios.
+
 \begin{figure}
 
 \centering{
@@ -363,6 +447,23 @@ ACV}
 muertes por ACV}
 
 \end{figure}%
+
+Se observa un primer coeficiente muy elevado en el rezago 1 (cercano a
+0,8), seguido de varios coeficientes significativos de menor magnitud
+entre los rezagos 2 y 10, con signos alternantes. Se destaca además un
+coeficiente marcadamente negativo en el rezago 12 (cercano a -0,4), que
+resulta notablemente mayor en valor absoluto que el resto de los
+coeficientes a partir del rezago 13, los cuales se ubican mayormente
+dentro de la banda de significancia o apenas por fuera de ella, salvo un
+pico aislado cercano al rezago 24. Este comportamiento sugiere que,
+además de la dependencia de corto plazo reflejada en los primeros
+rezagos, persiste cierta estructura asociada al componente estacional de
+la serie, evidenciada por el coeficiente significativo en el rezago 12.
+En conjunto, el correlograma parcial refuerza la idea de que la serie
+presenta una estructura de dependencia compleja, consistente con la
+presencia simultánea de componentes de corto plazo y de estacionalidad,
+lo que confirma nuevamente que la serie no es estacionaria en su forma
+original.
 
 
 
