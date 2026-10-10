@@ -165,7 +165,8 @@ datos_filtrado |>
     x = "Año",
     y = "Cantidad de muertes"
   ) +
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=10))
 ```
 Las medianas anuales confirman el mismo patrón en forma de "U" descrito anteriormente: descienden desde 1999 hasta aproximadamente 2010-2011, para luego aumentar de manera sostenida hasta 2018.
 
@@ -192,7 +193,8 @@ datos_filtrado |>
   theme_minimal() +
   coord_cartesian(
     clip = "off"
-  )
+  ) + 
+  
 ```
 Se observa que la forma del ciclo estacional se mantiene notablemente estable a lo largo de todo el período: en todos los años, los valores más altos se concentran en los meses de diciembre y enero, mientras que los valores más bajos se registran entre junio y septiembre. Lo que varía entre los distintos años no es la forma de la curva, sino su nivel general, lo cual es consistente con la tendencia en forma de "U" identificada previamente: las curvas correspondientes a los primeros años (1999-2003) y a los últimos (2016-2018) se ubican en niveles más altos, mientras que las curvas de los años centrales (2008-2013) se ubican en niveles más bajos. En síntesis, el gráfico estacional confirma la presencia de un patrón estacional anual marcado y persistente en el tiempo, lo que refuerza la evidencia de no estacionariedad de la serie observada en los análisis anteriores.  
 
